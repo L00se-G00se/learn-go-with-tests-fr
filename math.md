@@ -201,7 +201,7 @@ Ajoutons quelques tests supplémentaires pour d'autres positions de l'aiguille d
 func TestSecondHandAt30Seconds(t *testing.T) {
 	tm := time.Date(1337, time.January, 1, 0, 0, 30, 0, time.UTC)
 
-	want := clockface.Point{X: 150 + 90, Y: 150}
+	want := clockface.Point{X: 150, Y: 150 + 90}
 	got := clockface.SecondHand(tm)
 
 	if got != want {
@@ -210,13 +210,13 @@ func TestSecondHandAt30Seconds(t *testing.T) {
 }
 ```
 
-À 30 secondes, l'aiguille devrait pointer vers la droite, donc X augmente de la longueur de l'aiguille.
+À 30 secondes, l'aiguille devrait pointer vers le bas, donc Y augmente de la longueur de l'aiguille (l'axe Y d'un SVG va vers le bas).
 
 Pour le moment, notre test échoue :
 
 ```
 --- FAIL: TestSecondHandAt30Seconds (0.00s)
-    clockface_test.go:27: Got {150 60}, wanted {240 150}
+    clockface_test.go:27: Got {150 60}, wanted {150 240}
 ```
 
 Faisons en sorte que notre fonction gère ce cas également, même si c'est de manière simpliste pour l'instant :
@@ -230,8 +230,8 @@ func SecondHand(t time.Time) Point {
 		return Point{150, 60}
 	}
 	
-	// à 30 secondes, pointer vers la droite
-	return Point{240, 150}
+	// à 30 secondes, pointer vers le bas
+	return Point{150, 240}
 }
 ```
 
